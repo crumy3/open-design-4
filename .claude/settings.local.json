@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(curl -sI http://localhost:8080/index.html)",
+      "Bash(mkdir -p \"3\")",
+      "Bash(mv index.html css js assets \"3\"/)"
+    ]
+  }
+}
