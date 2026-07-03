@@ -2,33 +2,11 @@
   "use strict";
 
   var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var HEADER_OFFSET = 64; /* keep in sync with .header-inner height in style.css */
 
   /* ---------------------------------------------------------------------
-     Smooth scroll (Lenis) — falls back to native smooth-scroll if the
-     CDN library fails to load.
-  --------------------------------------------------------------------- */
-  var lenis = null;
-  if (!reduceMotion && window.Lenis) {
-    lenis = new Lenis({
-      duration: 1.0,
-      easing: function (t) { return Math.min(1, 1.001 - Math.pow(2, -10 * t)); },
-      smoothWheel: true,
-    });
-    function raf(time) {
-      lenis.raf(time);
-      requestAnimationFrame(raf);
-    }
-    requestAnimationFrame(raf);
-
-    if (window.gsap && window.ScrollTrigger) {
-      lenis.on("scroll", ScrollTrigger.update);
-      gsap.ticker.add(function (time) { lenis.raf(time * 1000); });
-      gsap.ticker.lagSmoothing(0);
-    }
-  }
-
-  /* ---------------------------------------------------------------------
-     Anchor links — smooth scroll via Lenis (or native) + close mobile nav
+     Anchor links — native smooth scroll, offset for the sticky header,
+     + close mobile nav
   --------------------------------------------------------------------- */
   document.querySelectorAll('a[href^="#"]').forEach(function (link) {
     link.addEventListener("click", function (e) {
@@ -37,11 +15,8 @@
       var target = document.querySelector(id);
       if (!target) return;
       e.preventDefault();
-      if (lenis) {
-        lenis.scrollTo(target, { offset: -64 });
-      } else {
-        target.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "start" });
-      }
+      var top = target.getBoundingClientRect().top + window.pageYOffset - HEADER_OFFSET;
+      window.scrollTo({ top: top, behavior: reduceMotion ? "auto" : "smooth" });
       closeNav();
     });
   });
@@ -51,6 +26,7 @@
   --------------------------------------------------------------------- */
   var header = document.querySelector(".site-header");
   function onScroll() {
+    if (!header) return;
     if (window.scrollY > 8) header.classList.add("scrolled");
     else header.classList.remove("scrolled");
   }
@@ -63,57 +39,38 @@
   var toggle = document.getElementById("nav-toggle");
   var nav = document.getElementById("main-nav");
   function closeNav() {
+    if (!nav || !toggle) return;
     nav.classList.remove("open");
     toggle.setAttribute("aria-expanded", "false");
   }
-  toggle.addEventListener("click", function () {
-    var isOpen = nav.classList.toggle("open");
-    toggle.setAttribute("aria-expanded", String(isOpen));
-  });
+  if (toggle && nav) {
+    toggle.addEventListener("click", function () {
+      var isOpen = nav.classList.toggle("open");
+      toggle.setAttribute("aria-expanded", String(isOpen));
+    });
+  }
 
   /* ---------------------------------------------------------------------
-     Scroll reveal + count-up stats via GSAP ScrollTrigger
-     (falls back to IntersectionObserver if GSAP fails to load)
+     Scroll reveal + count-up stats via IntersectionObserver
   --------------------------------------------------------------------- */
   var revealEls = document.querySelectorAll(".reveal-up");
+  var countEls = document.querySelectorAll("[data-count]");
 
-  if (!reduceMotion && window.gsap && window.ScrollTrigger) {
-    gsap.registerPlugin(ScrollTrigger);
-
-    revealEls.forEach(function (el) {
-      ScrollTrigger.create({
-        trigger: el,
-        start: "top 88%",
-        once: true,
-        onEnter: function () { el.classList.add("is-visible"); },
+  if ("IntersectionObserver" in window && !reduceMotion) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("is-visible");
+          if (entry.target.hasAttribute("data-count")) animateCount(entry.target);
+          io.unobserve(entry.target);
+        }
       });
-    });
-
-    document.querySelectorAll("[data-count]").forEach(function (el) {
-      ScrollTrigger.create({
-        trigger: el,
-        start: "top 90%",
-        once: true,
-        onEnter: function () { animateCount(el); },
-      });
-    });
+    }, { threshold: 0.3 });
+    revealEls.forEach(function (el) { io.observe(el); });
+    countEls.forEach(function (el) { io.observe(el); });
   } else {
-    if ("IntersectionObserver" in window && !reduceMotion) {
-      var io = new IntersectionObserver(function (entries) {
-        entries.forEach(function (entry) {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("is-visible");
-            if (entry.target.hasAttribute("data-count")) animateCount(entry.target);
-            io.unobserve(entry.target);
-          }
-        });
-      }, { threshold: 0.3 });
-      revealEls.forEach(function (el) { io.observe(el); });
-      document.querySelectorAll("[data-count]").forEach(function (el) { io.observe(el); });
-    } else {
-      revealEls.forEach(function (el) { el.classList.add("is-visible"); });
-      document.querySelectorAll("[data-count]").forEach(function (el) { animateCount(el); });
-    }
+    revealEls.forEach(function (el) { el.classList.add("is-visible"); });
+    countEls.forEach(function (el) { animateCount(el); });
   }
 
   function animateCount(el) {
@@ -149,25 +106,7 @@
         return;
       }
       form.classList.add("submitted");
-      success.classList.add("visible");
-    });
-  }
-
-  /* ---------------------------------------------------------------------
-     Pricing toggle — swaps monthly/annual figures on the price cards
-  --------------------------------------------------------------------- */
-  var toggleButtons = document.querySelectorAll(".toggle-option");
-  if (toggleButtons.length) {
-    toggleButtons.forEach(function (btn) {
-      btn.addEventListener("click", function () {
-        toggleButtons.forEach(function (b) { b.classList.remove("active"); });
-        btn.classList.add("active");
-        var term = btn.getAttribute("data-term");
-        document.querySelectorAll(".price-amount[data-monthly]").forEach(function (el) {
-          var value = term === "annual" ? el.getAttribute("data-annual") : el.getAttribute("data-monthly");
-          el.textContent = "$" + value;
-        });
-      });
+      if (success) success.classList.add("visible");
     });
   }
 })();

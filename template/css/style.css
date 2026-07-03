@@ -10,9 +10,7 @@
 
   /* colors — 1:1 from the DESIGN.md palette */
   --ink: #0a0a0a;
-  --primary-disabled: #e5e5e5;
   --body-c: #3a3a3a;
-  --body-strong: #1a1a1a;
   --muted: #6a6a6a;
   --muted-soft: #9a9a9a;
   --hairline: #e5e5e5;
@@ -65,7 +63,6 @@
   --illo-accent: #e0a317;
 
   /* radius scale */
-  --r-xs: 6px;
   --r-sm: 8px;
   --r-md: 12px;
   --r-lg: 16px;
@@ -73,13 +70,8 @@
   --r-pill: 9999px;
 
   /* spacing scale */
-  --sp-xxs: 4px;
-  --sp-xs: 8px;
-  --sp-sm: 12px;
-  --sp-md: 16px;
   --sp-lg: 24px;
   --sp-xl: 32px;
-  --sp-xxl: 48px;
   --sp-section: 96px;
 
   --ease: cubic-bezier(.16, 1, .3, 1);
@@ -145,10 +137,6 @@ button { font: inherit; cursor: pointer; }
 .btn-secondary { background: var(--canvas); color: var(--ink); border-color: var(--hairline); }
 .btn-secondary:hover { border-color: var(--ink); transform: translateY(-2px); box-shadow: 0 10px 20px -12px rgba(10,10,10,.25); }
 .btn-secondary:active { transform: translateY(0); box-shadow: none; }
-
-.btn-on-color { background: var(--canvas); color: var(--brand-teal); }
-.btn-on-color:hover { background: var(--surface-card); transform: translateY(-2px); box-shadow: 0 10px 20px -12px rgba(10,10,10,.25); }
-.btn-on-color:active { transform: translateY(0); box-shadow: none; }
 
 .btn-lg { padding: 13px 26px; font-size: 15px; height: 48px; }
 .btn-sm { padding: 9px 16px; font-size: 13px; height: 38px; }
@@ -321,8 +309,6 @@ button { font: inherit; cursor: pointer; }
 .feature-card-pink { background: var(--brand-pink); color: var(--ink); }
 .feature-card-teal { background: var(--brand-teal); color: var(--on-dark); }
 .feature-card-lavender { background: var(--brand-lavender); color: var(--ink); }
-.feature-card-peach { background: var(--brand-peach); color: var(--ink); }
-.feature-card-ochre { background: var(--brand-ochre); color: var(--ink); }
 .feature-card-cream { background: var(--surface-card); color: var(--ink); }
 
 .services { padding: var(--sp-section) 0; }
@@ -332,63 +318,9 @@ button { font: inherit; cursor: pointer; }
   width: 44px; height: 44px; display: flex; align-items: center; justify-content: center;
   border-radius: var(--r-md); background: rgba(255,255,255,.35); font-size: 19px; margin-bottom: 20px;
 }
-.feature-card-pink .feature-icon, .feature-card-lavender .feature-icon, .feature-card-peach .feature-icon, .feature-card-ochre .feature-icon, .feature-card-cream .feature-icon { background: rgba(10,10,10,.06); }
+.feature-card-pink .feature-icon, .feature-card-lavender .feature-icon, .feature-card-cream .feature-icon { background: rgba(10,10,10,.06); }
 .feature-tagline { font-family: var(--font-sans); font-size: 13.5px; font-weight: 700; margin-bottom: 10px; opacity: .85; }
 .feature-desc { font-size: 14.5px; line-height: 1.6; opacity: .9; }
-
-/* ---------------------------------------------------------------------- */
-/* Pricing — adapted from "pricing-glass" (21st.dev/@uithefactory).
-   Reskinned from dark glassmorphism to the site's cream/earth-tone
-   system: flat cream cards instead of blurred glass, the reserved pop
-   gold marks the featured tier instead of an animated glow. */
-/* ---------------------------------------------------------------------- */
-.pricing { padding: var(--sp-section) 0; }
-
-.pricing-toggle {
-  display: flex; align-items: center; justify-content: center; gap: 4px;
-  width: fit-content; margin: 32px auto 0;
-  background: var(--surface-card); border-radius: var(--r-pill); padding: 5px;
-}
-.toggle-option {
-  font-family: var(--font-sans); font-size: 13.5px; font-weight: 600; color: var(--muted);
-  background: transparent; border: none; border-radius: var(--r-pill); padding: 9px 18px;
-  display: inline-flex; align-items: center; gap: 7px; cursor: pointer; transition: background .2s, color .2s;
-}
-.toggle-option.active { background: var(--ink); color: #fff; }
-.toggle-save { font-size: 11px; font-weight: 700; color: var(--earth-text-accent); }
-.toggle-option.active .toggle-save { color: var(--illo-accent); }
-
-.pricing-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--sp-lg); margin-top: 44px; align-items: start; }
-.pricing-card {
-  position: relative;
-  background: var(--surface-card);
-  border-radius: var(--r-xl);
-  padding: var(--sp-xl);
-}
-.pricing-card h3 { font-family: var(--font-display); font-size: 20px; font-weight: 600; color: var(--ink); margin-bottom: 6px; }
-.pricing-tagline { font-size: 13.5px; color: var(--body-c); line-height: 1.5; min-height: 40px; }
-.pricing-price { display: flex; align-items: baseline; gap: 7px; margin: 18px 0 22px; }
-.price-amount { font-family: var(--font-display); font-size: 34px; font-weight: 600; color: var(--ink); letter-spacing: -.02em; }
-.price-term { font-size: 13px; color: var(--muted); font-weight: 500; }
-.pricing-card .btn-block { margin-bottom: 24px; }
-.pricing-features { display: flex; flex-direction: column; gap: 11px; }
-.pricing-features li { display: flex; align-items: flex-start; gap: 9px; font-size: 13.5px; color: var(--body-c); line-height: 1.45; }
-.pricing-features i { color: var(--brand-teal); font-size: 14px; margin-top: 2px; flex-shrink: 0; }
-
-.pricing-featured {
-  background: var(--canvas);
-  border: 2px solid var(--primary);
-  transform: scale(1.04);
-  box-shadow: 0 18px 40px -16px rgba(224,163,23,.35);
-}
-.pricing-badge {
-  position: absolute; top: -13px; left: 50%; transform: translateX(-50%);
-  background: var(--primary); color: var(--ink); font-family: var(--font-display);
-  font-size: 11.5px; font-weight: 600; padding: 5px 14px; border-radius: var(--r-pill);
-  white-space: nowrap;
-}
-.pricing-featured .price-amount { color: var(--earth-text-accent); }
-.pricing-featured .pricing-features i { color: var(--earth-text-accent); }
 
 /* ---------------------------------------------------------------------- */
 /* Proof / teardown                                                        */
@@ -510,13 +442,6 @@ button { font: inherit; cursor: pointer; }
 .why-item h3 { font-family: var(--font-display); font-size: 15.5px; font-weight: 600; margin-bottom: 8px; }
 .why-item p { font-size: 14px; line-height: 1.6; color: var(--body-c); }
 
-.risk-banner {
-  display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap;
-  background: var(--surface-card); border-radius: var(--r-xl); padding: 32px 36px;
-}
-.risk-text h3 { font-family: var(--font-display); font-size: 18px; font-weight: 600; margin-bottom: 8px; }
-.risk-text p { font-size: 14.5px; color: var(--body-c); max-width: 440px; line-height: 1.6; }
-
 /* ---------------------------------------------------------------------- */
 /* Testimonials — adapted from "testimonial" (21st.dev/@prebuiltui). The
    original uses full-bleed client headshot photos with a dark gradient
@@ -566,15 +491,6 @@ button { font: inherit; cursor: pointer; }
 /* ---------------------------------------------------------------------- */
 /* Founding offer — the featured teal band                                */
 /* ---------------------------------------------------------------------- */
-.founding-offer { padding: 40px 0 var(--sp-section); }
-.founding-card { background: var(--brand-teal); border-radius: var(--r-xl); padding: 64px 48px; text-align: center; }
-.founding-badge {
-  display: inline-flex; align-items: center; gap: 7px; font-size: 12.5px; font-weight: 600; color: var(--on-dark);
-  background: rgba(255,255,255,.14); border-radius: var(--r-pill); padding: 7px 14px; margin-bottom: 22px;
-}
-.founding-card h2 { font-family: var(--font-display); font-size: clamp(1.7rem, 3vw, 2.2rem); font-weight: 600; color: var(--on-dark); margin-bottom: 14px; letter-spacing: -.02em; }
-.founding-card > p { font-size: 15.5px; line-height: 1.65; color: rgba(255,255,255,.8); max-width: 560px; margin: 0 auto 28px; }
-
 /* ---------------------------------------------------------------------- */
 /* Process                                                                  */
 /* ---------------------------------------------------------------------- */
@@ -634,6 +550,7 @@ button { font: inherit; cursor: pointer; }
 
 .footer-bottom { display: flex; align-items: center; justify-content: space-between; padding: 20px 32px; flex-wrap: wrap; gap: 8px; background: var(--surface-strong); }
 .footer-bottom p { font-size: 12px; color: var(--muted); }
+.footer-tagline { font-weight: 500; }
 
 /* ---------------------------------------------------------------------- */
 /* Mobile sticky CTA                                                        */
@@ -652,8 +569,6 @@ button { font: inherit; cursor: pointer; }
 /* ---------------------------------------------------------------------- */
 @media (max-width: 1024px) {
   .hero-inner { max-width: 100%; }
-  .pricing-cards { grid-template-columns: repeat(2, 1fr); }
-  .pricing-featured { grid-column: span 2; transform: none; }
   .service-cards { grid-template-columns: repeat(2, 1fr); }
   .why-grid { grid-template-columns: repeat(2, 1fr); }
   .testimonial-cards { grid-template-columns: repeat(2, 1fr); }
@@ -675,9 +590,7 @@ button { font: inherit; cursor: pointer; }
   .main-nav.open .nav-link { padding: 10px 0; width: 100%; }
 
   .hero-title { font-size: 2.1rem; }
-  .pricing-cards, .service-cards, .why-grid, .testimonial-cards, .process-steps { grid-template-columns: 1fr; }
-  .pricing-featured { grid-column: auto; }
-  .pricing-toggle { flex-wrap: wrap; justify-content: center; }
+  .service-cards, .why-grid, .testimonial-cards, .process-steps { grid-template-columns: 1fr; }
   .impact-cards { flex-direction: column; }
   .footer-inner { grid-template-columns: 1fr; gap: 32px; }
 
