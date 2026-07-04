@@ -25,6 +25,12 @@
 <!-- hero-bg: fixed nature scene, covers full viewport while hero is visible -->
 <div class="hero-bg-illustration" aria-hidden="true">
   <img src="assets/hero_background.png" alt="" class="hero-bg-photo">
+  <!-- video layer: forest stream with running water (Pexels, Dominik Gryzbon,
+       free license). Sits on top of the static photo, which remains the
+       fallback while loading and for prefers-reduced-motion users. -->
+  <video class="hero-bg-photo hero-bg-video" autoplay muted loop playsinline
+         poster="assets/hero_background.png"
+         src="https://videos.pexels.com/video-files/36742878/15570991_2560_1440_60fps.mp4"></video>
 </div>
 
 <!-- ============ HEADER ============ -->

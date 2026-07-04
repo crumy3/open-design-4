@@ -665,6 +665,15 @@ button { font: inherit; cursor: pointer; }
 }
 .hero-bg-illustration > *:not(.hero-bg-photo) { position: relative; z-index: 1; }
 
+/* Video layer: brightness/saturation lift makes the light coming through
+   the trees read warmer and airier than the raw footage. The video paints
+   over the static photo; users with reduced-motion preferences (and any
+   browser that fails to load the video) see the photo instead. */
+.hero-bg-video { filter: brightness(1.18) saturate(1.06); }
+@media (prefers-reduced-motion: reduce) {
+  .hero-bg-video { display: none; }
+}
+
 /* ---------------------------------------------------------------------- */
 /* Services section image                                                  */
 /* ---------------------------------------------------------------------- */
