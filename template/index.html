@@ -19,18 +19,32 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%23FFFAF0'/%3E%3Cpath d='M18 72L38 40L52 58L64 32L84 72Z' fill='%23D9A62E'/%3E%3Ccircle cx='74' cy='26' r='10' fill='%23C9A227'/%3E%3C/svg%3E">
 
 <link rel="stylesheet" href="css/style.css">
+
+<!-- Vercel Web Analytics -->
+<script>
+  window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+</script>
+<script defer src="/_vercel/insights/script.js"></script>
+
+<!-- Vercel Speed Insights -->
+<script>
+  window.si = window.si || function () { (window.siq = window.siq || []).push(arguments); };
+</script>
+<script defer src="/_vercel/speed-insights/script.js"></script>
 </head>
 <body>
 
 <!-- hero-bg: fixed nature scene, covers full viewport while hero is visible -->
 <div class="hero-bg-illustration" aria-hidden="true">
   <img src="assets/hero_background.png" alt="" class="hero-bg-photo">
-  <!-- video layer: forest stream with running water (Pexels, Dominik Gryzbon,
-       free license). Sits on top of the static photo, which remains the
-       fallback while loading and for prefers-reduced-motion users. -->
+  <!-- video layer: forest stream with running water (Pexels #10409375,
+       "I Am Sorin", free license). 720p rendition — the layer is dimmed and
+       scrimmed, so higher resolutions add bytes, not visible quality. The
+       static photo above remains the fallback while loading, on mobile, and
+       for prefers-reduced-motion users. -->
   <video class="hero-bg-photo hero-bg-video" autoplay muted loop playsinline
          poster="assets/hero_background.png"
-         src="https://videos.pexels.com/video-files/36742878/15570991_2560_1440_60fps.mp4"></video>
+         src="https://videos.pexels.com/video-files/10409375/10409375-hd_1280_720_30fps.mp4"></video>
 </div>
 
 <!-- ============ HEADER ============ -->
@@ -84,7 +98,7 @@
         </p>
 
         <div class="hero-ctas reveal-up">
-          <a href="#contact" class="btn btn-primary btn-lg">
+          <a href="#contact" class="btn btn-primary btn-lg magnetic-btn">
             Get my free growth plan <i class="ph ph-arrow-right"></i>
           </a>
           <a href="#proof" class="btn btn-secondary btn-lg">
@@ -212,7 +226,7 @@
             <li><i class="ph-bold ph-x-circle"></i> Dated template, wall of text, weak on mobile</li>
           </ul>
 
-          <a href="#contact" class="btn btn-primary">Get my free teardown <i class="ph ph-arrow-right"></i></a>
+          <a href="#contact" class="btn btn-primary magnetic-btn">Get my free teardown <i class="ph ph-arrow-right"></i></a>
         </div>
       </div>
 
@@ -281,7 +295,7 @@
       <p class="section-kicker reveal-up">Why Cascade</p>
       <h2 class="section-title reveal-up">Built to grow your revenue — and easy to work with</h2>
 
-      <div class="why-grid">
+      <div class="why-grid reveal-stagger">
         <div class="why-item reveal-up">
           <span class="why-icon why-mint"><i class="ph-fill ph-chart-pie-slice"></i></span>
           <h3>Revenue-first</h3>
@@ -314,7 +328,7 @@
       <h2 class="section-title reveal-up">Real businesses, real numbers</h2>
       <p class="section-sub reveal-up">A few of the founders and marketers who've been through the process.</p>
 
-      <div class="testimonial-cards">
+      <div class="testimonial-cards reveal-stagger">
         <figure class="testimonial-card tcard-sage reveal-up">
           <i class="ph-fill ph-quotes testimonial-mark"></i>
           <blockquote>Cascade rebuilt our site in three weeks and our lead form conversion doubled almost overnight. No fluff, no jargon — just a site that finally does its job.</blockquote>
@@ -359,7 +373,7 @@
     <div class="container">
       <h2 class="section-title reveal-up">From first call to compounding growth</h2>
 
-      <div class="process-steps">
+      <div class="process-steps reveal-stagger">
         <div class="process-step reveal-up">
           <span class="process-num">01</span>
           <div class="process-icon process-icon-peach"><i class="ph ph-clipboard-text"></i></div>
@@ -390,7 +404,7 @@
       </div>
 
       <div class="process-cta reveal-up">
-        <a href="#contact" class="btn btn-primary btn-lg">Start with my free plan <i class="ph ph-arrow-right"></i></a>
+        <a href="#contact" class="btn btn-primary btn-lg magnetic-btn">Start with my free plan <i class="ph ph-arrow-right"></i></a>
       </div>
     </div>
   </section>
@@ -405,27 +419,34 @@
       </div>
 
       <form class="contact-form reveal-up" id="growth-form" novalidate>
-        <div class="form-row">
-          <label for="name">Name</label>
-          <input type="text" id="name" name="name" placeholder="Your name" required>
+        <div class="form-inputs-wrap" id="form-inputs-wrap">
+          <div class="form-row">
+            <label for="name">Name</label>
+            <input type="text" id="name" name="name" placeholder="Your name" required>
+          </div>
+          <div class="form-row">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" placeholder="you@company.com" required>
+          </div>
+          <div class="form-row">
+            <label for="website">Website</label>
+            <input type="text" id="website" name="website" placeholder="yourcompany.com">
+          </div>
+          <div class="form-row">
+            <label for="goal">What do you want to grow?</label>
+            <textarea id="goal" name="goal" rows="3" placeholder="More leads, more online sales, a new site…" required></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary btn-lg btn-block magnetic-btn" id="submit-btn">
+            <span class="btn-label">Request my free growth plan</span>
+            <i class="ph ph-arrow-right"></i>
+          </button>
         </div>
-        <div class="form-row">
-          <label for="email">Email</label>
-          <input type="email" id="email" name="email" placeholder="you@company.com" required>
+
+        <div class="form-success-card" id="form-success-card">
+          <div class="success-check-icon"><i class="ph-fill ph-check-circle"></i></div>
+          <h3>Plan requested!</h3>
+          <p>Thanks. Nolan will analyze your site and send over the growth teardown within 2 business days.</p>
         </div>
-        <div class="form-row">
-          <label for="website">Website</label>
-          <input type="text" id="website" name="website" placeholder="yourcompany.com">
-        </div>
-        <div class="form-row">
-          <label for="goal">What do you want to grow?</label>
-          <textarea id="goal" name="goal" rows="3" placeholder="More leads, more online sales, a new site…" required></textarea>
-        </div>
-        <button type="submit" class="btn btn-primary btn-lg btn-block" id="submit-btn">
-          <span class="btn-label">Request my free growth plan</span>
-          <i class="ph ph-arrow-right"></i>
-        </button>
-        <p class="form-success" id="form-success"><i class="ph-fill ph-check-circle"></i> Thanks — we'll be in touch within 2 business days.</p>
       </form>
     </div>
   </section>

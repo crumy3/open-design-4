@@ -22,16 +22,49 @@
   });
 
   /* ---------------------------------------------------------------------
-     Sticky header border on scroll
+     Sticky header border on scroll & Scroll Spy
   --------------------------------------------------------------------- */
   var header = document.querySelector(".site-header");
+  var sections = document.querySelectorAll("section[id]");
+  var navLinks = document.querySelectorAll(".nav-link");
+
   function onScroll() {
     if (!header) return;
+    // Sticky header class
     if (window.scrollY > 8) header.classList.add("scrolled");
     else header.classList.remove("scrolled");
+
+    // Scroll Spy active tracking
+    var scrollPos = window.scrollY + HEADER_OFFSET + 40;
+    var activeId = "";
+
+    sections.forEach(function (sec) {
+      var top = sec.offsetTop;
+      var height = sec.offsetHeight;
+      var id = sec.getAttribute("id");
+
+      if (scrollPos >= top && scrollPos < top + height) {
+        activeId = id;
+      }
+    });
+
+    // Special case for top of page
+    if (window.scrollY < 20) {
+      activeId = "";
+    }
+
+    navLinks.forEach(function (link) {
+      var href = link.getAttribute("href");
+      if (href === "#" + activeId) {
+        link.classList.add("active");
+      } else {
+        link.classList.remove("active");
+      }
+    });
   }
   window.addEventListener("scroll", onScroll, { passive: true });
   onScroll();
+
 
   /* ---------------------------------------------------------------------
      Mobile nav toggle
@@ -97,7 +130,8 @@
      Contact form — client-side only (no backend wired up yet)
   --------------------------------------------------------------------- */
   var form = document.getElementById("growth-form");
-  var success = document.getElementById("form-success");
+  var submitBtn = document.getElementById("submit-btn");
+
   if (form) {
     form.addEventListener("submit", function (e) {
       e.preventDefault();
@@ -105,10 +139,24 @@
         form.reportValidity();
         return;
       }
-      form.classList.add("submitted");
-      if (success) success.classList.add("visible");
+
+      // Add loading state to submit button
+      if (submitBtn) submitBtn.classList.add("btn-loading");
+
+      // Disable inputs during submission
+      var inputs = form.querySelectorAll("input, textarea");
+      inputs.forEach(function (input) {
+        input.disabled = true;
+      });
+
+      // Simulate a premium API request transition (850ms)
+      setTimeout(function () {
+        if (submitBtn) submitBtn.classList.remove("btn-loading");
+        form.classList.add("submitted");
+      }, 850);
     });
   }
+
 
   /* ---------------------------------------------------------------------
      Expanding Panels — click to activate
@@ -131,4 +179,53 @@
     });
   });
 
+  /* ---------------------------------------------------------------------
+     Magnetic Buttons hover effect
+  --------------------------------------------------------------------- */
+  var magneticBtns = document.querySelectorAll(".magnetic-btn");
+  if (!reduceMotion) {
+    magneticBtns.forEach(function (btn) {
+      btn.addEventListener("mousemove", function (e) {
+        var rect = btn.getBoundingClientRect();
+        var x = e.clientX - rect.left - rect.width / 2;
+        var y = e.clientY - rect.top - rect.height / 2;
+
+        // Pull strength (multiply by 0.35 to clamp)
+        var pullX = x * 0.35;
+        var pullY = y * 0.35;
+
+        btn.style.transform = "translate(" + pullX + "px, " + pullY + "px)";
+        btn.style.transition = "none";
+      });
+
+      btn.addEventListener("mouseleave", function () {
+        btn.style.transform = "translate(0px, 0px)";
+        btn.style.transition = "transform 0.45s cubic-bezier(0.16, 1, 0.3, 1)";
+      });
+    });
+  }
+
+  /* ---------------------------------------------------------------------
+     Hero background video — slowed slightly so the water reads calm
+     rather than busy, and paused once the hero scrolls out of view so
+     it isn't burning battery decoding video behind opaque sections.
+  --------------------------------------------------------------------- */
+  var heroVideo = document.querySelector(".hero-bg-video");
+  var heroSection = document.getElementById("hero");
+  if (heroVideo && !reduceMotion) {
+    heroVideo.playbackRate = 0.85;
+
+    if (heroSection && "IntersectionObserver" in window) {
+      new IntersectionObserver(function (entries) {
+        if (entries[0].isIntersecting) {
+          var p = heroVideo.play();
+          if (p && p.catch) { p.catch(function () {}); }
+        } else {
+          heroVideo.pause();
+        }
+      }, { threshold: 0 }).observe(heroSection);
+    }
+  }
+
 })();
+
