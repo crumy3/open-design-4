@@ -109,4 +109,26 @@
       if (success) success.classList.add("visible");
     });
   }
+
+  /* ---------------------------------------------------------------------
+     Expanding Panels — click to activate
+  --------------------------------------------------------------------- */
+  var options = document.querySelectorAll(".option");
+  options.forEach(function (opt) {
+    opt.addEventListener("click", function () {
+      options.forEach(function (o) { o.classList.remove("active"); });
+      opt.classList.add("active");
+    });
+
+    /* keyboard: Enter / Space */
+    opt.setAttribute("tabindex", "0");
+    opt.setAttribute("role", "button");
+    opt.addEventListener("keydown", function (e) {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        opt.click();
+      }
+    });
+  });
+
 })();

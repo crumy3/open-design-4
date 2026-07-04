@@ -6,7 +6,6 @@ Process
 [[PHONE]]
 Get my free plan
 
-Washington-based · serving businesses nationwide
 We build websites that turn visitors into paying customers.
 Cascade designs high-converting websites — then drives the traffic to fill them. SEO, paid ads, and conversion systems engineered to grow your revenue, not just your pageviews.
 
@@ -22,7 +21,6 @@ long-term contracts
 
 Senior, U.S.-based team · we build your growth plan before you pay a cent
 
-What we do
 One partner for the whole growth engine
 Most agencies build a site and walk away — or run ads to a page that doesn't convert. We own all three, so nothing falls through the cracks.
 

@@ -3,7 +3,9 @@
     "allow": [
       "Bash(curl -sI http://localhost:8080/index.html)",
       "Bash(mkdir -p \"3\")",
-      "Bash(mv index.html css js assets \"3\"/)"
+      "Bash(mv index.html css js assets \"3\"/)",
+      "Bash(powershell -NoProfile -Command \"Start-Process powershell -ArgumentList '-NoExit','-File','C:\\\\Users\\\\Administrator\\\\Desktop\\\\open design4.0\\\\.claude\\\\serve.ps1' -WindowStyle Normal\")",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" http://localhost:8765/template/index.html)"
     ]
   }
 }

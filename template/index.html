@@ -22,17 +22,9 @@
 </head>
 <body>
 
-<!-- hero-bg-illustration: fixed to the viewport, so it stays in place while
-     the page scrolls over it. Opaque section backgrounds further down the
-     page cover it once you scroll past the hero. -->
+<!-- hero-bg: fixed nature scene, covers full viewport while hero is visible -->
 <div class="hero-bg-illustration" aria-hidden="true">
-  <div class="illo-sun"></div>
-  <div class="illo-trail">
-    <span></span><span></span><span></span><span></span>
-  </div>
-  <div class="illo-hill illo-hill-back"></div>
-  <div class="illo-hill illo-hill-mid"></div>
-  <div class="illo-hill illo-hill-front"></div>
+  <img src="assets/hero_background.png" alt="" class="hero-bg-photo">
 </div>
 
 <!-- ============ HEADER ============ -->
@@ -77,8 +69,6 @@
 
     <div class="container hero-inner">
       <div class="hero-copy">
-        <p class="eyebrow reveal-up"><i class="ph-fill ph-map-pin"></i> Washington-based · serving businesses nationwide</p>
-
         <h1 class="hero-title reveal-up">
           We build websites that turn <em>visitors</em> into <span class="highlight">paying customers.</span>
         </h1>
@@ -121,43 +111,63 @@
   <!-- ============ SERVICES — cycling saturated feature cards ============ -->
   <section class="services" id="services">
     <div class="container">
-      <p class="section-kicker reveal-up">What we do</p>
       <h2 class="section-title reveal-up">One partner for the whole growth engine</h2>
       <p class="section-sub reveal-up">Most agencies build a site and walk away — or run ads to a page that doesn't convert. We own all three, so nothing falls through the cracks.</p>
 
-      <div class="service-cards">
-        <article class="feature-card feature-card-pink reveal-up">
-          <span class="feature-num">01</span>
-          <div class="feature-icon"><i class="ph ph-hammer"></i></div>
-          <h3>Build</h3>
-          <p class="feature-tagline">Websites engineered to sell</p>
-          <p class="feature-desc">Fast, custom, mobile-first sites built around your buyer's journey and designed to convert from day one.</p>
-        </article>
 
-        <article class="feature-card feature-card-teal reveal-up">
-          <span class="feature-num">02</span>
-          <div class="feature-icon"><i class="ph ph-magnifying-glass"></i></div>
-          <h3>Attract</h3>
-          <p class="feature-tagline">Get found by ready-to-buy customers</p>
-          <p class="feature-desc">SEO and paid search &amp; social that put you in front of people already looking for what you sell.</p>
-        </article>
+      <div class="options service-options reveal-up">
 
-        <article class="feature-card feature-card-lavender reveal-up">
-          <span class="feature-num">03</span>
-          <div class="feature-icon"><i class="ph ph-trend-up"></i></div>
-          <h3>Convert</h3>
-          <p class="feature-tagline">Turn clicks into booked revenue</p>
-          <p class="feature-desc">Landing pages, lead capture, and conversion optimization that squeeze more customers from the traffic you already have.</p>
-        </article>
+        <div class="option active" style="--optionBackground:url(assets/panel_build.png);">
+          <div class="shadow"></div>
+          <div class="label">
+            <div class="icon"><i class="ph ph-hammer"></i></div>
+            <div class="info">
+              <span class="option-num">01</span>
+              <div class="main">Build</div>
+              <div class="sub">Websites engineered to sell</div>
+              <p class="option-desc">Fast, custom, mobile-first sites built around your buyer's journey and designed to convert from day one.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="option" style="--optionBackground:url(assets/panel_attract.png);">
+          <div class="shadow"></div>
+          <div class="label">
+            <div class="icon"><i class="ph ph-magnifying-glass"></i></div>
+            <div class="info">
+              <span class="option-num">02</span>
+              <div class="main">Attract</div>
+              <div class="sub">Get found by ready-to-buy customers</div>
+              <p class="option-desc">SEO and paid search &amp; social that put you in front of people already looking for what you sell.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="option" style="--optionBackground:url(assets/panel_grow.png);">
+          <div class="shadow"></div>
+          <div class="label">
+            <div class="icon"><i class="ph ph-trend-up"></i></div>
+            <div class="info">
+              <span class="option-num">03</span>
+              <div class="main">Convert</div>
+              <div class="sub">Turn clicks into booked revenue</div>
+              <p class="option-desc">Landing pages, lead capture, and conversion optimization that squeeze more customers from the traffic you already have.</p>
+            </div>
+          </div>
+        </div>
+
       </div>
+
     </div>
   </section>
+
 
   <!-- ============ PROOF / TEARDOWN ============ -->
   <section class="proof" id="proof">
     <div class="container">
       <h2 class="section-title reveal-up">We don't have a decade of logos yet — so we prove it upfront</h2>
       <p class="section-sub reveal-up">We build a free, no-obligation growth teardown for every serious prospect — a real audit of your site scored against the same eight conversion principles the top agencies in the country share.</p>
+
 
       <div class="teardown-wrap reveal-up">
         <div class="teardown-mock">
@@ -243,10 +253,7 @@
   <section class="founder">
     <div class="container founder-inner">
       <div class="founder-portrait reveal-up">
-        <!-- PLACEHOLDER: swap this div for <img src="assets/nolan.jpg" alt="Nolan, founder of Cascade" class="founder-photo"> when a real photo is ready -->
-        <div class="founder-photo-placeholder">
-          <i class="ph-fill ph-user"></i>
-        </div>
+        <img src="assets/nolan.jpg" alt="Nolan, founder of Cascade" class="founder-photo">
         <span class="founder-badge"><i class="ph-fill ph-map-pin"></i> Seattle, WA</span>
       </div>
 
