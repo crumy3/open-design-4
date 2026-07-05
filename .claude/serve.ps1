@@ -1,6 +1,7 @@
 param(
   [int]$Port = 8765,
-  [string]$Root = (Split-Path -Parent $PSScriptRoot)
+  [string]$Path = "template",
+  [string]$Root = (Join-Path (Split-Path -Parent $PSScriptRoot) $Path)
 )
 
 Add-Type -AssemblyName System.Net.HttpListener -ErrorAction SilentlyContinue
@@ -21,9 +22,13 @@ while ($listener.IsListening) {
   $req = $context.Request
   $res = $context.Response
   try {
-    $path = [Uri]::UnescapeDataString($req.Url.AbsolutePath)
-    if ($path -eq "/") { $path = "/index.html" }
-    $filePath = Join-Path $Root ($path.TrimStart("/"))
+    $urlPath = [Uri]::UnescapeDataString($req.Url.AbsolutePath)
+    if ($urlPath -eq "/" -or $urlPath -eq "") { $urlPath = "/index.html" }
+    $filePath = Join-Path $Root ($urlPath.TrimStart("/"))
+    # If path points to a directory, serve its index.html
+    if (Test-Path $filePath -PathType Container) {
+      $filePath = Join-Path $filePath "index.html"
+    }
     if (Test-Path $filePath -PathType Leaf) {
       $ext = [System.IO.Path]::GetExtension($filePath)
       $contentType = $mime[$ext]

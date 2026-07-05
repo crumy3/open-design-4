@@ -108,6 +108,17 @@ button { font: inherit; cursor: pointer; }
 .reveal-up { opacity: 0; transform: translateY(16px); transition: opacity .6s var(--ease), transform .6s var(--ease); }
 .reveal-up.is-visible { opacity: 1; transform: translateY(0); }
 
+/* Hero CTA pulse — subtle glow on the primary button in the hero only;
+   runs at 2.4s intervals so it nudges attention without being distracting.
+   Stripped automatically by the prefers-reduced-motion block above. */
+@keyframes hero-cta-pulse {
+  0%, 100% { box-shadow: 0 1px 0 rgba(10,10,10,.05), 0 0 0 0 rgba(224,163,23,0); }
+  50% { box-shadow: 0 1px 0 rgba(10,10,10,.05), 0 0 0 8px rgba(224,163,23,0); }
+}
+.hero .btn-primary {
+  animation: hero-cta-pulse 2.4s ease-in-out infinite;
+}
+
 /* ---------------------------------------------------------------------- */
 /* Buttons — component.button-primary / secondary / on-color              */
 /* ---------------------------------------------------------------------- */
@@ -489,7 +500,12 @@ button { font: inherit; cursor: pointer; }
 /* ---------------------------------------------------------------------- */
 .founder { padding: var(--sp-section) 0; }
 .founder-inner { display: grid; grid-template-columns: 260px 1fr; gap: 56px; align-items: center; }
-.founder-portrait { position: relative; }
+.founder-portrait {
+  position: relative;
+  transition: transform 0.35s var(--ease);
+  will-change: transform;
+}
+.founder-portrait:hover { transform: translateY(-4px); }
 .founder-photo-placeholder {
   width: 100%; aspect-ratio: 1; border-radius: var(--r-xl); background: var(--brand-peach);
   display: flex; align-items: center; justify-content: center; color: var(--ink); font-size: 62px;
@@ -499,7 +515,9 @@ button { font: inherit; cursor: pointer; }
   position: absolute; bottom: -14px; left: 16px; display: inline-flex; align-items: center; gap: 6px;
   background: var(--canvas); border: 1px solid var(--hairline); border-radius: var(--r-pill);
   padding: 7px 13px; font-size: 12.5px; font-weight: 600;
+  transition: box-shadow 0.25s var(--ease);
 }
+.founder-portrait:hover .founder-badge { box-shadow: 0 4px 12px rgba(10,8,5,.12); }
 .founder-badge i { color: var(--earth-text-accent); }
 .founder-signature { margin-top: 22px; padding-top: 18px; border-top: 1px solid var(--hairline); }
 .founder-name { font-family: var(--font-display); font-size: 15px; font-weight: 600; color: var(--ink); }
@@ -513,11 +531,15 @@ button { font: inherit; cursor: pointer; }
 .why-icon {
   display: inline-flex; align-items: center; justify-content: center; width: 38px; height: 38px;
   border-radius: var(--r-sm); font-size: 17px; margin-bottom: 16px; color: var(--ink);
+  transition: transform 0.25s var(--ease);
 }
+/* Lift the icon chip on card hover as a micro-interaction signal */
+.why-item:hover .why-icon { transform: translateY(-2px) scale(1.08); }
 .why-mint { background: var(--brand-mint); }
 .why-coral { background: var(--brand-coral); color: var(--on-dark); }
 .why-ochre { background: var(--brand-ochre); }
 .why-lavender { background: var(--brand-lavender); }
+.why-item { cursor: default; }
 .why-item h3 { font-family: var(--font-display); font-size: 15.5px; font-weight: 600; margin-bottom: 8px; }
 .why-item p { font-size: 14px; line-height: 1.6; color: var(--body-c); }
 
@@ -575,9 +597,15 @@ button { font: inherit; cursor: pointer; }
 /* ---------------------------------------------------------------------- */
 .process { padding: var(--sp-section) 0; }
 .process-steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 22px; margin-top: 56px; }
-.process-step { background: var(--surface-card); border-radius: var(--r-lg); padding: 26px 22px; }
+.process-step { background: var(--surface-card); border-radius: var(--r-lg); padding: 26px 22px; cursor: default; }
 .process-num { display: block; font-family: var(--font-display); font-size: 13px; font-weight: 600; color: var(--muted); margin-bottom: 16px; }
-.process-icon { width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border-radius: var(--r-sm); font-size: 18px; margin-bottom: 18px; color: var(--ink); }
+.process-icon {
+  width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;
+  border-radius: var(--r-sm); font-size: 18px; margin-bottom: 18px; color: var(--ink);
+  transition: transform 0.25s var(--ease), filter 0.25s var(--ease);
+}
+/* Pop the step icon on hover — signals interactivity and matches motion.csv "icon animations on scroll" */
+.process-step:hover .process-icon { transform: scale(1.1) rotate(-4deg); filter: brightness(1.08); }
 .process-icon-peach { background: var(--brand-peach); }
 .process-icon-ochre { background: var(--brand-ochre); }
 .process-icon-mint { background: var(--brand-mint); }
@@ -594,7 +622,23 @@ button { font: inherit; cursor: pointer; }
 .contact-phone-line { margin-top: 24px; font-size: 14.5px; color: var(--body-c); }
 .contact-phone-line a { color: var(--ink); font-weight: 600; text-decoration: underline; }
 
-.contact-form { background: var(--surface-card); border-radius: var(--r-xl); padding: 32px; }
+/* Contact form — glassmorphism frosted panel, lifted slightly over the
+   fixed illustration. The translucent cream surface + blur keeps it on-
+   brand while adding the frosted-glass depth the skill prescribes for
+   conversion-optimized B2B service forms. */
+.contact-form {
+  background: rgba(255,250,240,.88);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255,255,255,.7);
+  border-radius: var(--r-xl);
+  padding: 32px;
+  box-shadow: 0 8px 32px rgba(10,8,5,.10), 0 2px 8px rgba(10,8,5,.06);
+  transition: box-shadow 0.35s var(--ease);
+}
+.contact-form:focus-within {
+  box-shadow: 0 12px 40px rgba(10,8,5,.14), 0 0 0 2px rgba(224,163,23,.18);
+}
 .form-row { margin-bottom: 18px; }
 /* Visually hidden (not display:none, which some bots detect and skip) —
    keeps it out of sight/tab order for real visitors while still catching bots. */
@@ -615,7 +659,17 @@ button { font: inherit; cursor: pointer; }
 }
 .form-row input { height: 44px; }
 .form-row input::placeholder, .form-row textarea::placeholder { color: var(--muted-soft); }
-.form-row input:focus, .form-row textarea:focus { outline: none; border-color: var(--ink); border-width: 1.5px; }
+.form-row input:focus, .form-row textarea:focus {
+  outline: none;
+  border-color: var(--primary);
+  border-width: 2px;
+  box-shadow: 0 0 0 3px rgba(224,163,23,.15);
+  transition: border-color .18s var(--ease), box-shadow .18s var(--ease);
+}
+.form-row input:focus-visible, .form-row textarea:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
 .form-row textarea { resize: vertical; min-height: 84px; }
 
 /* Form Success State Card & Submitting state */
@@ -718,10 +772,20 @@ button { font: inherit; cursor: pointer; }
 /* ---------------------------------------------------------------------- */
 /* Mobile sticky CTA                                                        */
 /* ---------------------------------------------------------------------- */
+/* Mobile sticky CTA — slides up from off-screen on load (80ms delay so it
+   doesn't compete with hero entrance). Min-height 52px satisfies the 44px
+   touch-target minimum from the UX guidelines. */
+@keyframes sticky-cta-enter {
+  from { transform: translateY(100%); }
+  to   { transform: translateY(0); }
+}
 .mobile-sticky-cta {
   display: none; position: fixed; bottom: 0; left: 0; right: 0; z-index: 90;
-  background: var(--ink); color: var(--on-primary); text-align: center; font-weight: 600; font-size: 14.5px; padding: 15px;
+  min-height: 52px;
+  background: var(--ink); color: var(--on-primary); text-align: center;
+  font-weight: 600; font-size: 14.5px; padding: 14px 20px;
   transition: background .15s var(--ease);
+  cursor: pointer;
 }
 .mobile-sticky-cta:hover, .mobile-sticky-cta:focus-visible { background: #000; }
 .mobile-sticky-cta:active { background: #222; }
@@ -1083,39 +1147,56 @@ button { font: inherit; cursor: pointer; }
 }
 
 /* ---------------------------------------------------------------------- */
-/* Premium Card Hover Lifts & Shadows (Bento Grid Style)                   */
+/* Premium Card Hover Lifts & Shadows (Soft UI Evolution pattern)          */
+/* Hover: translateY(-5px) scale(1.015) — per motion.csv "Standard"        */
+/* card hover: 200-300ms power2.out. Color-tinted shadows per card accent. */
 /* ---------------------------------------------------------------------- */
 .why-item,
 .testimonial-card,
 .process-step,
 .impact-card,
 .leak-panel {
-  transition: transform 0.4s var(--ease), box-shadow 0.4s var(--ease);
+  transition: transform 0.28s var(--ease), box-shadow 0.28s var(--ease);
   will-change: transform, box-shadow;
 }
 
 .why-item:hover,
-.testimonial-card:hover,
 .process-step:hover,
 .impact-card:hover {
   transform: translateY(-5px) scale(1.015);
-  box-shadow: 0 16px 36px rgba(10, 8, 5, 0.12);
+  box-shadow: 0 16px 36px -6px rgba(10,8,5,.13);
 }
 
-/* Specific styling for green testimonial card shadow on hover */
-.tcard-forest:hover {
-  box-shadow: 0 16px 36px rgba(63, 77, 46, 0.28);
-}
+/* Testimonial cards get palette-matched shadows */
+.testimonial-card:hover { transform: translateY(-5px) scale(1.015); }
+.tcard-sage:hover  { box-shadow: 0 16px 36px -6px rgba(169,180,126,.42); }
+.tcard-forest:hover { box-shadow: 0 16px 36px -6px rgba(63,77,46,.38); }
+.tcard-wheat:hover  { box-shadow: 0 16px 36px -6px rgba(217,203,148,.40); }
 
 /* ---------------------------------------------------------------------- */
-/* Staggered Scroll Reveals                                               */
+/* Staggered Scroll Reveals — per motion.csv "Stagger List Standard"       */
+/* 0.06-0.07s per child, capped at 8 children so last item isn't laggy.   */
+/* Disabled on mobile (single-column stack reveals fine without stagger).  */
 /* ---------------------------------------------------------------------- */
 @media (min-width: 641px) {
-  .reveal-stagger > .reveal-up.is-visible:nth-child(1) { transition-delay: 0.05s; }
-  .reveal-stagger > .reveal-up.is-visible:nth-child(2) { transition-delay: 0.12s; }
-  .reveal-stagger > .reveal-up.is-visible:nth-child(3) { transition-delay: 0.19s; }
-  .reveal-stagger > .reveal-up.is-visible:nth-child(4) { transition-delay: 0.26s; }
-  .reveal-stagger > .reveal-up.is-visible:nth-child(5) { transition-delay: 0.33s; }
+  .reveal-stagger > .reveal-up.is-visible:nth-child(1) { transition-delay: 0.04s; }
+  .reveal-stagger > .reveal-up.is-visible:nth-child(2) { transition-delay: 0.10s; }
+  .reveal-stagger > .reveal-up.is-visible:nth-child(3) { transition-delay: 0.16s; }
+  .reveal-stagger > .reveal-up.is-visible:nth-child(4) { transition-delay: 0.22s; }
+  .reveal-stagger > .reveal-up.is-visible:nth-child(5) { transition-delay: 0.28s; }
+  .reveal-stagger > .reveal-up.is-visible:nth-child(6) { transition-delay: 0.34s; }
+  .reveal-stagger > .reveal-up.is-visible:nth-child(7) { transition-delay: 0.40s; }
+  .reveal-stagger > .reveal-up.is-visible:nth-child(8) { transition-delay: 0.46s; }
 }
 
-
+/* ---------------------------------------------------------------------- */
+/* Footer link hover — warm accent pop on interactive items                */
+/* ---------------------------------------------------------------------- */
+.footer-col a {
+  transition: color 0.18s var(--ease), transform 0.18s var(--ease);
+  display: inline-flex;
+}
+.footer-col a:hover {
+  color: var(--earth-text-accent);
+  transform: translateX(2px);
+}

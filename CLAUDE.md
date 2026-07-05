@@ -24,6 +24,30 @@ forked/customized per client. No build step — plain HTML/CSS/JS.
 This project has no build tooling, no package.json, and (as of this
 cleanup) is a git repo — commit before large structural changes.
 
+## IMPORTANT: pushing to GitHub does NOT deploy this site
+The Vercel project (`cascade-web` / `cascade33` team / `prj_SPsfsIIAh7WNWCcbWrFS0XTK44Yi`)
+has **no real Git integration** — confirmed via the Vercel API, `project.link.type`
+is empty. The "Vercel" check that appears on GitHub commits is cosmetic and
+does NOT trigger a build. All deployments so far have gone out via direct
+API/CLI upload, not via a git push.
+**To actually deploy a change:** create a deployment via the Vercel API
+(`POST /v13/deployments` with `project`, `target: "production"`, and a
+`files` array of `{file, data, encoding: "base64"}` for every file in
+`template/`, excluding `.vercel/` and `assets/unused/`) using the token in
+Credential Manager (`scripts/get-vercel-key.ps1`). Still `git commit`/push
+too, so the repo stays the source of truth — just don't expect the push
+alone to update the live site. Consider properly connecting the Vercel
+project to GitHub (Project Settings → Git) so this stops being manual.
+- Public production URL: `https://cascade-web-eight.vercel.app` (the other
+  auto-generated `*.vercel.app` aliases are behind Vercel's SSO wall by
+  default — only domains explicitly added under the project's Domains tab
+  are exempt).
+- A Vercel API token is stored in Windows Credential Manager as
+  `VERCEL_API_TOKEN`; retrieve via `scripts/get-vercel-key.ps1`. It authenticates
+  fine and can read/deploy project data, but does NOT expose Web Analytics /
+  Speed Insights metrics — those endpoints 404 on Vercel's public API and
+  are dashboard-only.
+
 ## Template architecture (`template/`)
 
 - `index.html` — single file, section-commented (`<!-- ==== SECTION ==== -->`).

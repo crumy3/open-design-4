@@ -98,9 +98,30 @@
           io.unobserve(entry.target);
         }
       });
-    }, { threshold: 0.3 });
+    }, { threshold: 0.15 });
     revealEls.forEach(function (el) { io.observe(el); });
     countEls.forEach(function (el) { io.observe(el); });
+
+    /* Staggered child reveals — when a .reveal-stagger container enters the
+       viewport, assign each .reveal-up child a JS-driven transition-delay
+       (0 + 60ms * index) then mark it visible so the CSS stagger kicks in.
+       This supplements the CSS nth-child approach and handles containers
+       with dynamic child counts cleanly. */
+    var staggerContainers = document.querySelectorAll(".reveal-stagger");
+    var staggerIO = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        var children = entry.target.querySelectorAll(".reveal-up");
+        children.forEach(function (child, idx) {
+          setTimeout(function () {
+            child.classList.add("is-visible");
+          }, idx * 60);
+        });
+        staggerIO.unobserve(entry.target);
+      });
+    }, { threshold: 0.1 });
+    staggerContainers.forEach(function (container) { staggerIO.observe(container); });
+
   } else {
     revealEls.forEach(function (el) { el.classList.add("is-visible"); });
     countEls.forEach(function (el) { animateCount(el); });
@@ -175,13 +196,35 @@
 
 
   /* ---------------------------------------------------------------------
-     Expanding Panels — click to activate
+     Expanding Panels — click to activate + mobile auto-cycle
   --------------------------------------------------------------------- */
   var options = document.querySelectorAll(".option");
+  var panelTimer = null;
+  var userInteracted = false;
+
+  function setActivePanel(el) {
+    options.forEach(function (o) { o.classList.remove("active"); });
+    el.classList.add("active");
+  }
+
+  /* Auto-cycle panels on narrow screens every 3s; pauses after any click */
+  function startPanelCycle() {
+    if (window.innerWidth > 768 || options.length === 0) return;
+    clearInterval(panelTimer);
+    panelTimer = setInterval(function () {
+      if (userInteracted) { clearInterval(panelTimer); return; }
+      var activeIdx = 0;
+      options.forEach(function (o, i) { if (o.classList.contains("active")) activeIdx = i; });
+      var nextIdx = (activeIdx + 1) % options.length;
+      setActivePanel(options[nextIdx]);
+    }, 3000);
+  }
+
   options.forEach(function (opt) {
     opt.addEventListener("click", function () {
-      options.forEach(function (o) { o.classList.remove("active"); });
-      opt.classList.add("active");
+      userInteracted = true;
+      clearInterval(panelTimer);
+      setActivePanel(opt);
     });
 
     /* keyboard: Enter / Space */
@@ -194,6 +237,11 @@
       }
     });
   });
+
+  startPanelCycle();
+  window.addEventListener("resize", function () {
+    if (!userInteracted) startPanelCycle();
+  }, { passive: true });
 
   /* ---------------------------------------------------------------------
      Magnetic Buttons hover effect
