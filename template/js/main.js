@@ -127,10 +127,11 @@
   }
 
   /* ---------------------------------------------------------------------
-     Contact form — client-side only (no backend wired up yet)
+     Contact form — submits to /api/contact (Vercel serverless function)
   --------------------------------------------------------------------- */
   var form = document.getElementById("growth-form");
   var submitBtn = document.getElementById("submit-btn");
+  var formError = document.getElementById("form-error");
 
   if (form) {
     form.addEventListener("submit", function (e) {
@@ -140,20 +141,35 @@
         return;
       }
 
-      // Add loading state to submit button
-      if (submitBtn) submitBtn.classList.add("btn-loading");
+      if (formError) formError.hidden = true;
+      if (submitBtn) { submitBtn.classList.add("btn-loading"); submitBtn.disabled = true; }
 
-      // Disable inputs during submission
       var inputs = form.querySelectorAll("input, textarea");
-      inputs.forEach(function (input) {
-        input.disabled = true;
-      });
+      inputs.forEach(function (input) { input.disabled = true; });
 
-      // Simulate a premium API request transition (850ms)
-      setTimeout(function () {
-        if (submitBtn) submitBtn.classList.remove("btn-loading");
-        form.classList.add("submitted");
-      }, 850);
+      var data = {
+        name: form.name.value,
+        email: form.email.value,
+        website: form.website.value,
+        goal: form.goal.value,
+        "company-website": form["company-website"].value
+      };
+
+      fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data)
+      })
+        .then(function (res) { return res.json().then(function (body) { return { ok: res.ok, body: body }; }); })
+        .then(function (result) {
+          if (!result.ok) throw new Error((result.body && result.body.error) || "Submission failed");
+          form.classList.add("submitted");
+        })
+        .catch(function () {
+          inputs.forEach(function (input) { input.disabled = false; });
+          if (submitBtn) { submitBtn.classList.remove("btn-loading"); submitBtn.disabled = false; }
+          if (formError) formError.hidden = false;
+        });
     });
   }
 

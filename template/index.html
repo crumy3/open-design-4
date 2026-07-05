@@ -420,6 +420,12 @@
 
       <form class="contact-form reveal-up" id="growth-form" novalidate>
         <div class="form-inputs-wrap" id="form-inputs-wrap">
+          <!-- honeypot: hidden from real users via CSS, left blank by them;
+               bots that auto-fill every field trip this and get silently rejected -->
+          <div class="form-row honeypot-field" aria-hidden="true">
+            <label for="company-website">Company Website</label>
+            <input type="text" id="company-website" name="company-website" tabindex="-1" autocomplete="off">
+          </div>
           <div class="form-row">
             <label for="name">Name</label>
             <input type="text" id="name" name="name" placeholder="Your name" required>
@@ -440,6 +446,7 @@
             <span class="btn-label">Request my free growth plan</span>
             <i class="ph ph-arrow-right"></i>
           </button>
+          <p class="form-error" id="form-error" role="alert" hidden>Something went wrong sending your request. Please try again, or call <a href="tel:+12065550148">(206) 555-0148</a>.</p>
         </div>
 
         <div class="form-success-card" id="form-success-card">
