@@ -291,5 +291,144 @@
     }
   }
 
+  /* ---------------------------------------------------------------------
+     ROI Calculator Logic (updates leak values and conic-gradient donut)
+  --------------------------------------------------------------------- */
+  var spendSlider = document.getElementById("calc-spend");
+  var convSlider = document.getElementById("calc-conv");
+  var valSlider = document.getElementById("calc-avg-lead-value");
+
+  var spendVal = document.getElementById("calc-spend-val");
+  var convVal = document.getElementById("calc-conv-val");
+  var leadVal = document.getElementById("calc-lead-val-val");
+
+  var leakDisplay = document.getElementById("calc-total-leak");
+  var recoverDisplay = document.getElementById("calc-total-recover");
+  var donutLeakAmount = document.getElementById("donut-leak-amount");
+  var leakDonut = document.getElementById("leak-donut");
+
+  var p1ValDisplay = document.getElementById("leak-p1-val");
+  var p2ValDisplay = document.getElementById("leak-p2-val");
+  var p3ValDisplay = document.getElementById("leak-p3-val");
+
+  function updateCalculator() {
+    if (!spendSlider || !convSlider || !valSlider) return;
+
+    var spend = parseInt(spendSlider.value, 10);
+    var conv = parseFloat(convSlider.value);
+    var val = parseInt(valSlider.value, 10);
+
+    // Update value indicators
+    if (spendVal) spendVal.textContent = "$" + spend.toLocaleString();
+    if (convVal) convVal.textContent = conv.toFixed(1) + "%";
+    if (leadVal) leadVal.textContent = "$" + val;
+
+    // totalLeak = Spend * (0.6 - (C / 10)) clamped between 10% and 80%
+    var leakFactor = 0.6 - (conv / 10.0);
+    if (leakFactor < 0.1) leakFactor = 0.1;
+    if (leakFactor > 0.8) leakFactor = 0.8;
+
+    var totalLeak = Math.round(spend * leakFactor);
+    var recoverable = Math.round(totalLeak * 0.75); // 75% recoverable by Cascade optimizations
+
+    var leakFormatted = "$" + totalLeak.toLocaleString();
+    var recoverFormatted = "$" + recoverable.toLocaleString() + "/mo";
+
+    if (leakDisplay) leakDisplay.textContent = leakFormatted;
+    if (recoverDisplay) recoverDisplay.textContent = recoverFormatted;
+    if (donutLeakAmount) donutLeakAmount.textContent = leakFormatted;
+
+    // Proportional breakdown (42% pink, 33% teal, 25% lavender)
+    var p1Amt = Math.round(totalLeak * 0.42);
+    var p2Amt = Math.round(totalLeak * 0.33);
+    var p3Amt = totalLeak - p1Amt - p2Amt;
+
+    if (p1ValDisplay) p1ValDisplay.textContent = "$" + p1Amt.toLocaleString() + " (42%)";
+    if (p2ValDisplay) p2ValDisplay.textContent = "$" + p2Amt.toLocaleString() + " (33%)";
+    if (p3ValDisplay) p3ValDisplay.textContent = "$" + p3Amt.toLocaleString() + " (25%)";
+
+    // Set conic-gradient variables on donut chart (re-paint segments)
+    if (leakDonut) {
+      leakDonut.style.setProperty("--p1", 42);
+      leakDonut.style.setProperty("--p2", 33);
+      leakDonut.style.setProperty("--p3", 25);
+      leakDonut.style.background = "conic-gradient(var(--brand-pink) 0% 42%, var(--brand-teal) 42% 75%, var(--brand-lavender) 75% 100%)";
+    }
+  }
+
+  if (spendSlider) {
+    spendSlider.addEventListener("input", updateCalculator);
+    convSlider.addEventListener("input", updateCalculator);
+    valSlider.addEventListener("input", updateCalculator);
+    updateCalculator();
+  }
+
+  /* ---------------------------------------------------------------------
+     Interactive Website Health Score Audit Checklist
+  --------------------------------------------------------------------- */
+  var auditCheckboxes = document.querySelectorAll(".audit-checkbox");
+  var scoreBar = document.getElementById("audit-score-bar");
+  var scoreNum = document.getElementById("audit-score-num");
+  var teardownCtaBtn = document.getElementById("teardown-cta-btn");
+
+  function calculateHealthScore() {
+    var score = 100;
+    auditCheckboxes.forEach(function (cb) {
+      if (cb.checked) {
+        var penalty = parseInt(cb.getAttribute("data-penalty"), 10) || 0;
+        score -= penalty;
+      }
+    });
+
+    if (score < 20) score = 20; // clamp at minimum score
+
+    if (scoreNum) {
+      scoreNum.textContent = score + "%";
+    }
+
+    if (scoreBar) {
+      scoreBar.style.width = score + "%";
+      // Dynamic color code
+      if (score >= 80) {
+        scoreBar.style.backgroundColor = "#1b7a4d"; // Green (Healthy)
+        if (scoreNum) scoreNum.style.color = "#1b7a4d";
+      } else if (score >= 50) {
+        scoreBar.style.backgroundColor = "var(--primary)"; // Amber (Warning)
+        if (scoreNum) scoreNum.style.color = "var(--earth-text-accent)";
+      } else {
+        scoreBar.style.backgroundColor = "#a83232"; // Red (Critical leakage)
+        if (scoreNum) scoreNum.style.color = "#a83232";
+      }
+    }
+
+    if (teardownCtaBtn) {
+      if (score < 50) {
+        teardownCtaBtn.innerHTML = 'Fix my website leakage <i class="ph ph-arrow-right"></i>';
+      } else {
+        teardownCtaBtn.innerHTML = 'Get my free teardown <i class="ph ph-arrow-right"></i>';
+      }
+    }
+  }
+
+  auditCheckboxes.forEach(function (cb) {
+    cb.addEventListener("change", calculateHealthScore);
+  });
+  
+  calculateHealthScore();
+
+  /* ---------------------------------------------------------------------
+     Bento Card Mousemove hover effect (radial gradient cursor follow)
+  --------------------------------------------------------------------- */
+  var bentoCards = document.querySelectorAll(".bento-card");
+  bentoCards.forEach(function (card) {
+    card.addEventListener("mousemove", function (e) {
+      var rect = card.getBoundingClientRect();
+      var x = e.clientX - rect.left;
+      var y = e.clientY - rect.top;
+      card.style.setProperty("--mouse-x", x + "px");
+      card.style.setProperty("--mouse-y", y + "px");
+    });
+  });
+
 })();
 

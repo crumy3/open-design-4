@@ -217,37 +217,104 @@
 
         <div class="teardown-findings">
           <h3>Strong business. Invisible online.</h3>
-          <p class="findings-lead">A common pattern: a genuinely great business — strong credentials, real reviews, a good offer — with a website that hides all of it.</p>
+          <p class="findings-lead">Select the issues your current website faces to see your live Website Health Score:</p>
 
-          <ul class="findings-list">
-            <li><i class="ph-bold ph-x-circle"></i> Headline sells the category, not the customer's outcome</li>
-            <li><i class="ph-bold ph-x-circle"></i> Primary CTA is a phone number in a paragraph — no form, no button above the fold</li>
-            <li><i class="ph-bold ph-x-circle"></i> The strongest offer or guarantee is buried deep in the page</li>
-            <li><i class="ph-bold ph-x-circle"></i> Dated template, wall of text, weak on mobile</li>
+          <div class="audit-score-container">
+            <span class="audit-score-label">Website Health Score</span>
+            <div class="audit-score-bar-bg">
+              <div class="audit-score-bar" id="audit-score-bar" style="width: 100%;"></div>
+            </div>
+            <span class="audit-score-number" id="audit-score-num">100%</span>
+          </div>
+
+          <ul class="findings-list audit-checklist">
+            <li>
+              <label class="audit-item">
+                <input type="checkbox" class="audit-checkbox" data-penalty="20">
+                <span class="checkbox-custom"></span>
+                <span>Headline sells the category, not the outcome</span>
+              </label>
+            </li>
+            <li>
+              <label class="audit-item">
+                <input type="checkbox" class="audit-checkbox" data-penalty="25">
+                <span class="checkbox-custom"></span>
+                <span>No form/button above fold (phone in text)</span>
+              </label>
+            </li>
+            <li>
+              <label class="audit-item">
+                <input type="checkbox" class="audit-checkbox" data-penalty="20">
+                <span class="checkbox-custom"></span>
+                <span>Strongest offer or guarantee is buried deep</span>
+              </label>
+            </li>
+            <li>
+              <label class="audit-item">
+                <input type="checkbox" class="audit-checkbox" data-penalty="15">
+                <span class="checkbox-custom"></span>
+                <span>Dated template, wall of text, weak on mobile</span>
+              </label>
+            </li>
           </ul>
 
-          <a href="#contact" class="btn btn-primary magnetic-btn">Get my free teardown <i class="ph ph-arrow-right"></i></a>
+          <a href="#contact" class="btn btn-primary magnetic-btn" id="teardown-cta-btn">Get my free teardown <i class="ph ph-arrow-right"></i></a>
         </div>
       </div>
 
-      <!-- money-leak donut, styled as a cream feature card -->
+      <!-- money-leak donut, styled as a cream feature card with dynamic sliders -->
       <div class="leak-panel feature-card feature-card-cream reveal-up">
+        <div class="leak-inputs">
+          <p class="leak-heading"><i class="ph-fill ph-calculator"></i> Conversion ROI Calculator</p>
+          <div class="calculator-row">
+            <div class="calc-label-row">
+              <label for="calc-spend">Monthly Ad Spend</label>
+              <span class="calc-value" id="calc-spend-val">$5,000</span>
+            </div>
+            <input type="range" id="calc-spend" min="1000" max="50000" step="500" value="5000" class="calc-slider">
+          </div>
+          <div class="calculator-row">
+            <div class="calc-label-row">
+              <label for="calc-conv">Current Site Conversion</label>
+              <span class="calc-value" id="calc-conv-val">1.2%</span>
+            </div>
+            <input type="range" id="calc-conv" min="0.2" max="5.0" step="0.1" value="1.2" class="calc-slider">
+          </div>
+          <div class="calculator-row">
+            <div class="calc-label-row">
+              <label for="calc-avg-lead-value">Average Lead Value</label>
+              <span class="calc-value" id="calc-lead-val-val">$150</span>
+            </div>
+            <input type="range" id="calc-avg-lead-value" min="50" max="1000" step="10" value="150" class="calc-slider">
+          </div>
+          <div class="leak-summary-box">
+            <div class="leak-summary-item">
+              <span>Estimated Monthly Leakage:</span>
+              <strong id="calc-total-leak">$2,400</strong>
+            </div>
+            <div class="leak-summary-item highlight">
+              <span>Recoverable via Cascade:</span>
+              <strong id="calc-total-recover">$1,800/mo</strong>
+            </div>
+          </div>
+        </div>
+
         <div class="leak-chart">
-          <div class="donut" style="--p1:42; --p2:33; --p3:25;">
+          <div class="donut" id="leak-donut" style="--p1:42; --p2:33; --p3:25;">
             <div class="donut-center">
-              <span class="donut-amount">$2,400<small>+</small></span>
-              <span class="donut-sub">left on the table / mo</span>
+              <span class="donut-amount" id="donut-leak-amount">$2,400</span>
+              <span class="donut-sub">leaked / mo</span>
             </div>
           </div>
         </div>
         <div class="leak-legend">
-          <p class="leak-heading"><i class="ph-fill ph-coin"></i> Where a typical budget leaks</p>
+          <p class="leak-heading"><i class="ph-fill ph-coin"></i> Where Your Budget Leaks</p>
           <ul>
-            <li><span class="dot dot-pink"></span> Ad spend sent to a non-converting page <strong>42%</strong></li>
-            <li><span class="dot dot-teal"></span> Visitors lost to a slow, dated site <strong>33%</strong></li>
-            <li><span class="dot dot-lavender"></span> Leads lost with no fast follow-up <strong>25%</strong></li>
+            <li><span class="dot dot-pink"></span> Ad spend sent to non-converting page <strong id="leak-p1-val">$1,008 (42%)</strong></li>
+            <li><span class="dot dot-teal"></span> Visitors lost to slow/dated site <strong id="leak-p2-val">$792 (33%)</strong></li>
+            <li><span class="dot dot-lavender"></span> Leads lost with no fast follow-up <strong id="leak-p3-val">$600 (25%)</strong></li>
           </ul>
-          <p class="leak-disclaimer">Illustrative breakdown based on typical outcomes for this category, not a guarantee. Your free teardown will show your actual numbers.</p>
+          <p class="leak-disclaimer">Estimates based on your inputs &amp; industry averages. Your custom teardown will analyze your actual live metrics.</p>
         </div>
       </div>
 
@@ -265,6 +332,84 @@
           </div>
         </div>
         <p class="impact-disclaimer">Illustrative estimates based on typical outcomes for this category, not a guarantee. Your free teardown will be built specifically for your site.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ WORK / BENTO GRID PORTFOLIO ============ -->
+  <section class="work" id="work">
+    <div class="grid-blueprint-lines" aria-hidden="true">
+      <div class="blueprint-line vertical"></div>
+      <div class="blueprint-line vertical"></div>
+      <div class="blueprint-line vertical"></div>
+    </div>
+    <div class="container">
+      <p class="section-kicker reveal-up">Our Work</p>
+      <h2 class="section-title reveal-up">Growth engines we've built &amp; scaled</h2>
+      <p class="section-sub reveal-up">Real projects. Real conversion metrics. No hand-waving.</p>
+
+      <div class="bento-grid reveal-stagger">
+        <!-- Bento Card 1: Evergreen Dental (Large 2-column card) -->
+        <div class="bento-card bento-card-large reveal-up">
+          <div class="bento-bg-glow"></div>
+          <div class="bento-content">
+            <span class="bento-tag">Web Design &amp; Build</span>
+            <h3>Evergreen Dental</h3>
+            <p class="bento-desc">Rebuilt a dated WordPress site into a blazing-fast, custom conversion machine. Optimized local search strategy and online patient scheduling.</p>
+            <div class="bento-stats-row">
+              <div class="bento-stat-pill">
+                <span class="bento-stat-num">+110%</span>
+                <span class="bento-stat-lbl">Conversion Rate</span>
+              </div>
+              <div class="bento-stat-pill">
+                <span class="bento-stat-num">3 Weeks</span>
+                <span class="bento-stat-lbl">Build Time</span>
+              </div>
+            </div>
+          </div>
+          <div class="bento-visual">
+            <div class="bento-mock-browser">
+              <div class="bento-browser-dot"></div><div class="bento-browser-dot"></div><div class="bento-browser-dot"></div>
+              <div class="bento-mock-page">
+                <div class="bento-mock-hero-bar"></div>
+                <div class="bento-mock-hero-bar short"></div>
+                <div class="bento-mock-btn">Book Appointment</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bento Card 2: Reyes HVAC & Plumbing (1-column card) -->
+        <div class="bento-card reveal-up">
+          <div class="bento-bg-glow"></div>
+          <div class="bento-content">
+            <span class="bento-tag">Attract (SEO &amp; PPC)</span>
+            <h3>Reyes HVAC</h3>
+            <p class="bento-desc">Took over ad budget allocation and restructured campaigns targeting high-intent local search queries. Zeroed out wasted clicks.</p>
+            <div class="bento-stats-row">
+              <div class="bento-stat-pill">
+                <span class="bento-stat-num">+52%</span>
+                <span class="bento-stat-lbl">Leads in 30 Days</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bento Card 3: Alder Home Goods (1-column card) -->
+        <div class="bento-card reveal-up">
+          <div class="bento-bg-glow"></div>
+          <div class="bento-content">
+            <span class="bento-tag">Convert (CRO)</span>
+            <h3>Alder Home Goods</h3>
+            <p class="bento-desc">Implemented automated post-submit SMS and email follow-up flows to rescue abandoned inquiries. Instantly plugged budget leaks.</p>
+            <div class="bento-stats-row">
+              <div class="bento-stat-pill">
+                <span class="bento-stat-num">$8,400+</span>
+                <span class="bento-stat-lbl">Recovered/Mo</span>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </section>
